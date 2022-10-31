@@ -26,6 +26,6 @@ qemu: qemu-setup
 all: qemu fuzzer manager
 
 clean:
-	rm -r ./tools/qemu*
+	rm -r ./tools/qemu-7.1.0*
 	rm fuzzer
 	rm manager
