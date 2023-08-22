@@ -1,22 +1,10 @@
-# lxfuzz
-lxfuzz is a grey-box kernel fuzzer used for linux. it is scalable because of qemu being used to emulate in a way to be able to freely choose the number of instances and their memory.
+# uxfuzz
+uxfuzz is a black-box kernel fuzzer used for unix. it is scalable because of qemu being used to emulate in a way to be able to freely choose the number of instances and their memory.
 
 ## setup and run
 
-first you will need a properly built linux kernel. following options should be enabled
-```
-CONFIG_USER_NS=y
-CONFIG_NET_DEV_REFCNT_TRACKER=y
-CONFIG_NET_NS_REFCNT_TRACKER=y
-CONFIG_KASAN=y
-CONFIG_PANIC_ON_OOPS=y
-CONFIG_BUG_ON_DATA_CORRUPTION=y
-CONFIG_KCOV=y # make sure /sys/kernel/debug/kcov is rw for user
-CONFIG_KCOV_INSTRUMENT_ALL=y
-
-# CONFIG_RANDOMIZE_BASE is not set
-```
-enabling extra options that add more code to be fuzzed is always a good idea
+you can build any kernel as you like, just make sure qemu exits if the kernel panics. obviously you'll need an address/memory/... sanitizer to detect most of the
+vulnerabilities. enabling extra kernel config options that add more code to be fuzzed is always a good idea.
 
 now, to build the fuzzer simply run
 ```
