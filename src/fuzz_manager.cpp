@@ -158,7 +158,7 @@ auto main(int32_t argc, char **argv) -> int32_t {
   auto crashes{0};
   mqd_t desc{0};
 
-  std::cout << "welcome to lxfuzz v0.0.1" << std::endl;
+  std::cout << "welcome to uxfuzz v0.0.1" << std::endl;
 
   if(argc < 2) print_usage_and_exit(argv);
   fuzzer_args = parse_fuzzer_args(&argv[2]);
