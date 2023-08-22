@@ -3,8 +3,9 @@ uxfuzz is a black-box kernel fuzzer used for unix. it is scalable because of qem
 
 ## setup and run
 
-you can build any kernel as you like, just make sure qemu exits if the kernel panics. obviously you'll need an address/memory/... sanitizer to detect most of the
-vulnerabilities. enabling extra kernel config options that add more code to be fuzzed is always a good idea.
+you can essentially build the fuzzer for any kernel/OS you like, however minor adjustments to header files and standard functions might be needed. when configuring your
+kernel, make sure qemu exits if the kernel panics. obviously you'll need an address/memory/... sanitizer to detect most of the vulnerabilities. enabling extra kernel
+config options that add more code to be fuzzed is always a good idea.
 
 now, to build the fuzzer simply run
 ```
