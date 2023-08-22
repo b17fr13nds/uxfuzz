@@ -188,14 +188,9 @@ auto start(int32_t core, fuzzinfo_t fi) -> void {
       if(program == nullptr) break;
 
       flog_program(program, core);
-
-      fi.record_coverage(core);
+      
       waitpid(execute_program(program), NULL, 0);
-      fstats(fi.get_corpus_count());
-      ncovered = fi.stop_recording(core);
-
-      prev_ncovered = ncovered;
-      prev_addr_covered = fi.get_address(core, ncovered);
+      fstats(fi.get_corpus_count();
 
       if(!program->nops) {
         delete program;
@@ -205,12 +200,10 @@ auto start(int32_t core, fuzzinfo_t fi) -> void {
       mutate_prog(program);
       flog_program(program, core);
 
-      fi.record_coverage(core);
       waitpid(execute_program(program), NULL, 0);
       fstats(fi.get_corpus_count());
-      ncovered = fi.stop_recording(core);
 
-      if(ncovered > prev_ncovered || (ncovered <= prev_ncovered && fi.get_address(core, ncovered) != prev_addr_covered)) {
+      if(get_random(0,1)) {
         fi.add_corpus(program);
       } else {
         delete program;
