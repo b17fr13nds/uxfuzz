@@ -102,7 +102,7 @@ auto parse_fuzzer_args(char **start) -> std::string {
 auto main(int32_t argc, char **argv) -> int32_t {
   std::string fuzzer_args{};
 
-  std::cout << "welcome to lxfuzz v0.0.1" << std::endl;
+  std::cout << "welcome to uxfuzz v0.0.1" << std::endl;
 
   if(argc < 1) print_usage_and_exit(argv);
   fuzzer_args = parse_fuzzer_args(&argv[1]);
