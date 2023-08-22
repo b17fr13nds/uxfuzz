@@ -7,14 +7,6 @@
 #include <sys/ioctl.h>
 #include <sys/types.h>
 
-#define KCOV_INIT_TRACE _IOR('c', 1, unsigned long)
-#define KCOV_ENABLE _IO('c', 100)
-#define KCOV_DISABLE _IO('c', 101)
-#define COVER_SIZE (64<<10)
-
-#define KCOV_TRACE_PC 0
-#define KCOV_TRACE_CMP 1
-
 #define PAGESIZE 0x1000
 
 inline void error(const char *str) {
@@ -144,41 +136,9 @@ public:
   int32_t type;
 };
 
-typedef struct {
-  int32_t kcov_fd;
-  uint64_t *addr_covered, ncovered;
-} kcov_data_t;
-
 class fuzzinfo_t {
   std::vector<prog_t*> corpus;
-  kcov_data_t **kcov;
 public:
-  fuzzinfo_t(int n) : kcov{nullptr} {
-    kcov = new kcov_data_t*[n];
-
-    for(int i{0}; i < n; i++) {
-      kcov[i] = new kcov_data_t;
-      kcov[i]->kcov_fd = open("/sys/kernel/debug/kcov", O_RDWR);
-      if(ioctl(kcov[i]->kcov_fd, KCOV_INIT_TRACE, COVER_SIZE) == -1) error("ioctl");
-      kcov[i]->addr_covered = (uint64_t*)mmap(NULL, COVER_SIZE*sizeof(uint64_t), PROT_READ|PROT_WRITE, MAP_SHARED, kcov[i]->kcov_fd, 0);
-    }
-  }
-
-  virtual void record_coverage(int32_t thread) {
-    if(ioctl(kcov[thread]->kcov_fd, KCOV_ENABLE, KCOV_TRACE_PC) == -1) error("ioctl");
-    __atomic_store_n(&kcov[thread]->addr_covered[0], 0, __ATOMIC_RELAXED);
-  }
-
-  virtual uint64_t stop_recording(int32_t thread) {
-    kcov[thread]->ncovered = __atomic_load_n(&kcov[thread]->addr_covered[0], __ATOMIC_RELAXED);
-    if(ioctl(kcov[thread]->kcov_fd, KCOV_DISABLE, 0) == -1) error("ioctl");
-
-    return kcov[thread]->ncovered;
-  }
-
-  virtual uint64_t get_address(int32_t thread, uint64_t idx) {
-    return kcov[thread]->addr_covered[idx];
-  }
 
   virtual void add_corpus(prog_t *p) {
     corpus.push_back(p);
