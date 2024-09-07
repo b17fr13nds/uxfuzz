@@ -1,4 +1,5 @@
 # uxfuzz
+##### NOTE: archived - use lxfuzz for linux
 uxfuzz is a black-box kernel fuzzer used for unix. it is scalable because of qemu being used to emulate in a way to be able to freely choose the number of instances and their memory.
 
 ## setup and run
